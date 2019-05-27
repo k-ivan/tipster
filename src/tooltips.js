@@ -21,12 +21,12 @@ class Tipster {
   }
 
   offset(el) {
-    let box = el.getBoundingClientRect();
+    const { top, left, width, height } = el.getBoundingClientRect();
     return {
-      top: box.top + window.pageYOffset,
-      left: box.left + window.pageXOffset,
-      width: box.width,
-      height: box.height
+      top: top + window.pageYOffset,
+      left: left + window.pageXOffset,
+      width,
+      height
     }
   }
 
@@ -56,52 +56,62 @@ class Tipster {
     this.hide();
   }
 
-  show(target, position = 'bottom') {
-    // if(this.tip) return;
-    if(this.timer) clearTimeout(this.timer);
+  _create() {
+    const tip = Object.assign(document.createElement('div'), {
+      'className': 'tipster',
+      'innerHTML': this.target.getAttribute('data-tooltip')
+    });
+    document.body.appendChild(tip);
+    return tip;
+  }
 
-    if(!this.tip) {
-      this.tip = Object.assign(document.createElement('div'), {
-        'className': 'tipster',
-        'innerHTML': target.getAttribute('data-tooltip')
-      });
-      document.body.appendChild(this.tip);
-    } else {
-      this.tip.className = 'tipster';
-      this.tip.style.opacity = 0;
-      this.tip.style.right = 'auto';
-      this.tip.style.left = 'auto';
-      this.tip.innerHTML = target.getAttribute('data-tooltip');
-    }
+  _position() {
+    // let coords = this.offset(target);
+    // const targetWidth = target.offsetWidth;
+    const {left, top, width, height} = this.offset(this.target);
+    const tipWidth = this.tip.offsetWidth;
+    const tipHeight = this.tip.offsetHeight;
 
-    let coords = this.offset(target);
-    let targetWidth = target.offsetWidth;
-    let tipWidth = this.tip.offsetWidth;
-
-    if(coords.left > document.body.clientWidth - targetWidth - 30) {
+    if(left > document.body.clientWidth - width - 30) {
       this.tip.style.right = '15px';
       this.tip.classList.add('tipster--arrow-right');
     }
-    else if(coords.left > (tipWidth / 2) ) {
-      this.tip.style.left = coords.left - (tipWidth / 2) + (targetWidth / 2) + 'px';
+    else if(left > (tipWidth / 2) ) {
+      this.tip.style.left = `${left - (tipWidth / 2) + (width / 2)}px`;
       this.tip.classList.add('tipster--arrow-center');
     }
     else {
-      this.tip.style.left = coords.left + 'px';
+      this.tip.style.left = `${left}px`;
       this.tip.classList.add('tipster--arrow-left');
     }
 
-    if(position === 'bottom') {
-      this.tip.style.top  = coords.top + target.offsetHeight + 10 + 'px';
+    if(this.position === 'bottom') {
+      this.tip.style.top  = `${top + height + 10}px`;
     } else {
       this.tip.classList.add('tipster--arrow-top');
-      this.tip.style.top  = coords.top - this.tip.offsetHeight - 10 + 'px';
+      this.tip.style.top  = `${top - tipHeight - 10}px`;
+    }
+  }
+
+  show(target, position = 'bottom') {
+    if(this.timer) clearTimeout(this.timer);
+
+    if(!this.tip) {
+      this.tip = this._create(target);
+    } else {
+      this.tip.className = 'tipster';
+      this.tip.style.cssText = `right: auto; left: auto;`
+      this.tip.innerHTML = target.getAttribute('data-tooltip');
     }
 
+    this.delay = parseInt(getComputedStyle(this.tip).transitionDuration, 10);
+    this._position(target, position);
+
     setTimeout(() => {
-      this.tip.style.opacity = 1;
-      this.tip.style.pointerEvents = 'none';
-    }, 10);
+      // this.tip.style.opacity = 1;
+      // this.tip.style.pointerEvents = 'none';
+      this.tip.classList.add('is-show');
+    }, 0);
   }
 
   hide() {
@@ -109,12 +119,13 @@ class Tipster {
 
     if(this.timer) clearTimeout(this.timer);
 
-    this.tip.style.opacity = 0;
+    // this.tip.style.opacity = 0;
+    this.tip.classList.remove('is-show');
 
     this.timer = setTimeout(() => {
       document.body.removeChild(this.tip);
       this.tip = null;
-    }, 100);
+    }, this.delay);
 
   }
 
