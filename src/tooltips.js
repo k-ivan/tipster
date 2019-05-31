@@ -1,37 +1,33 @@
+import './polyfill';
+import Utils from './utils';
 class Tipster {
 
   constructor(selector = null, position) {
+    if (!selector) return false;
 
+    if (typeof selector === 'string') {
+      this.selector = document.querySelector(selector);
+    } else {
+      this.selector = selector;
+    }
+
+    if (!(this.selector instanceof Element)) {
+      return false;
+    }
+
+    this.position = position || 'top';
     this.tip = null;
     this.timer = null;
+    this.target = null;
+    this.currentElement = null;
 
-    if(typeof selector === 'string') {
-      this.selector = selector;
-      this.position = position || 'top';
-      this.target = null;
-      this.currentElement = null;
-
-      this.onHandler = this.on.bind(this);
-      this.offHandler = this.off.bind(this);
-
-      document.body.addEventListener('mouseover', this.onHandler);
-      document.body.addEventListener('mouseout', this.offHandler);
-    }
-
+    this.mouseoverHandler = this.mouseoverHandler.bind(this);
+    this.mouseoutHandler = this.mouseoutHandler.bind(this);
+    document.body.addEventListener('mouseover', this.mouseoverHandler);
+    document.body.addEventListener('mouseout', this.mouseoutHandler);
   }
 
-  offset(el) {
-    const { top, left, width, height } = el.getBoundingClientRect();
-    return {
-      top: top + window.pageYOffset,
-      left: left + window.pageXOffset,
-      width,
-      height
-    }
-  }
-
-  on(event) {
-    // if(this.currentElement || this.tip) return;
+  mouseoverHandler(event) {
     if(this.currentElement) return;
 
     this.target = event.target.closest(this.selector);
@@ -40,10 +36,10 @@ class Tipster {
 
     this.currentElement = this.target;
     this.target = event.target.closest(this.selector);
-    this.show(this.target, this.position);
+    this.show();
   }
 
-  off(event) {
+  mouseoutHandler(event) {
     if (!this.currentElement || !this.tip) return;
     let relatedTarget = event.relatedTarget;
     if(relatedTarget) {
@@ -66,50 +62,51 @@ class Tipster {
   }
 
   _position() {
-    // let coords = this.offset(target);
-    // const targetWidth = target.offsetWidth;
-    const {left, top, width, height} = this.offset(this.target);
+    const {
+      targetLeft: left,
+      targetTop: top,
+      targetWidth: width,
+      targetHeight: height
+    } = Utils.getBoundingBox(this.target);
+
     const tipWidth = this.tip.offsetWidth;
     const tipHeight = this.tip.offsetHeight;
 
-    if(left > document.body.clientWidth - width - 30) {
+    if(targetLeft > document.body.clientWidth - targetWidth - 30) {
       this.tip.style.right = '15px';
       this.tip.classList.add('tipster--arrow-right');
     }
-    else if(left > (tipWidth / 2) ) {
-      this.tip.style.left = `${left - (tipWidth / 2) + (width / 2)}px`;
+    else if(targetLeft > (tipWidth / 2) ) {
+      this.tip.style.left = `${targetLeft - (tipWidth / 2) + (targetWidth / 2)}px`;
       this.tip.classList.add('tipster--arrow-center');
     }
     else {
-      this.tip.style.left = `${left}px`;
+      this.tip.style.left = `${targetLeft}px`;
       this.tip.classList.add('tipster--arrow-left');
     }
 
     if(this.position === 'bottom') {
-      this.tip.style.top  = `${top + height + 10}px`;
+      this.tip.style.top  = `${targetTop + targetHeight + 10}px`;
     } else {
       this.tip.classList.add('tipster--arrow-top');
-      this.tip.style.top  = `${top - tipHeight - 10}px`;
+      this.tip.style.top  = `${targetTop - targetTipHeight - 10}px`;
     }
   }
 
-  show(target, position = 'bottom') {
+  show() {
     if(this.timer) clearTimeout(this.timer);
 
     if(!this.tip) {
-      this.tip = this._create(target);
+      this.tip = this._create();
     } else {
       this.tip.className = 'tipster';
       this.tip.style.cssText = `right: auto; left: auto;`
-      this.tip.innerHTML = target.getAttribute('data-tooltip');
     }
 
-    this.delay = parseInt(getComputedStyle(this.tip).transitionDuration, 10);
-    this._position(target, position);
+    this.delay = Utils.getTransitionDurationFromElement(this.tip);
+    this._position();
 
     setTimeout(() => {
-      // this.tip.style.opacity = 1;
-      // this.tip.style.pointerEvents = 'none';
       this.tip.classList.add('is-show');
     }, 0);
   }
@@ -119,7 +116,6 @@ class Tipster {
 
     if(this.timer) clearTimeout(this.timer);
 
-    // this.tip.style.opacity = 0;
     this.tip.classList.remove('is-show');
 
     this.timer = setTimeout(() => {
@@ -130,17 +126,11 @@ class Tipster {
   }
 
   destroy() {
-    this.tip = null;
-    this.timer = null;
-    if(this.selector) {
-      this.selector = null;
-      this.position = null;
-      this.target = null;
-      this.currentElement = null;
-
-      document.body.removeEventListener('mouseover', this.onHandler);
-      document.body.removeEventListener('mouseout', this.offHandler);
-    }
+    Object.keys(this).forEach(key => {
+      delete this[key]
+    })
+    document.body.removeEventListener('mouseover', this.onHandler);
+    document.body.removeEventListener('mouseout', this.offHandler);
   }
 
 }
