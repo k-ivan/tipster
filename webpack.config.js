@@ -63,7 +63,6 @@ module.exports = (env, arg) => {
     devtool: arg.mode === 'development' ? 'eval-source-map' : false,
     plugins: [
       new CleanWebpackPlugin({
-        dry: true,
         verbose: true,
         cleanOnceBeforeBuildPatterns: ['**/*', '!index.html']
       }),

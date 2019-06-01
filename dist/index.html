@@ -36,15 +36,19 @@
     <p>
       <span class="tip" data-tooltip="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, mollitia obcaecati! Magnam mollitia, numquam repudiandae doloribus ea qui minima amet.">Large tooltip</span> ipsum dolor sit amet consectetur, adipisicing elit. Incidunt, dicta! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam earum distinctio ipsam. Adipisci mollitia perferendis provident, id eius aut voluptatum.
     </p>
-    <p style="text-center">
+    <p>
       <img class="tip" data-tooltip="This is image from unsplash" src="https://picsum.photos/150" alt="">
       <img class="tip" data-tooltip="This is second image from unsplash" src="https://picsum.photos/150" alt="">
       <img class="tip" data-tooltip="This is another image from unsplash" src="https://picsum.photos/150" alt="">
     </p>
   </div>
+  <!-- for ie 9 -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.2.20171210/classList.min.js"></script> -->
+  <!-- for ie 9 -->
+
   <script src="tooltips.js"></script>
   <script>
-    var tips = new Tipster('.tip')
+    var tips = new Tipster('.tip');
   </script>
 </body>
 </html>
