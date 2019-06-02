@@ -28,12 +28,12 @@ export default {
     );
   },
   getBoundingBox(element) {
-    const { top, left, width, height } = element.getBoundingClientRect();
+    const { top, left, right, bottom } = element.getBoundingClientRect();
     return {
       top: top + window.pageYOffset,
       left: left + window.pageXOffset,
-      width,
-      height
+      width: right - left,
+      height: bottom - top
     }
   }
 }
