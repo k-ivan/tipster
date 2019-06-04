@@ -12,6 +12,7 @@
   border-radius: 2px;
   opacity: 0;
   transition: opacity .15s linear;
+  box-sizing: border-box;
   z-index: 3000;
 }
 .tipster.is-show {

@@ -62,8 +62,9 @@ class Tipster {
     const tipWidth = this.tip.offsetWidth;
     const tipHeight = this.tip.offsetHeight;
 
-    if(targetLeft + targetWidth > document.body.clientWidth - 30) {
-      this.tip.style.right = '15px';
+    // if(targetLeft + targetWidth > document.body.clientWidth - 30) {
+    if(targetLeft + tipWidth > document.body.clientWidth) {
+      this.tip.style.left = `${document.body.clientWidth - tipWidth - (targetWidth / 2)}px`;
       this.tip.classList.add('tipster--arrow-right');
     }
     else if(targetLeft > (tipWidth / 2) ) {
