@@ -100,7 +100,7 @@ class Tipster {
 
     setTimeout(() => {
       this.tip.classList.add('is-show');
-    }, 20);
+    }, 0);
   }
 
   hide() {
