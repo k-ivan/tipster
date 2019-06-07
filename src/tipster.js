@@ -1,12 +1,13 @@
+import './tipster.css';
 import './polyfill';
 import Utils from './utils';
+
 class Tipster {
-  constructor(selector = null, position) {
-    if (!selector) return false;
-    if (typeof selector !== 'string') return false;
+  constructor(selector = null, placement = 'top') {
+    if (!selector || typeof selector !== 'string') return false;
 
     this.selector = selector;
-    this.position = position || 'top';
+    this.placement = placement;
     this.tip = null;
     this.timer = null;
     this.target = null;
@@ -43,7 +44,7 @@ class Tipster {
     this.hide();
   }
 
-  _create() {
+  create() {
     const tip = Object.assign(document.createElement('div'), {
       'className': 'tipster'
     });
@@ -51,7 +52,7 @@ class Tipster {
     return tip;
   }
 
-  _position() {
+  position() {
     const {
       left: targetLeft,
       top: targetTop,
@@ -62,7 +63,12 @@ class Tipster {
     const tipWidth = this.tip.offsetWidth;
     const tipHeight = this.tip.offsetHeight;
 
-    if(targetLeft + (targetWidth / 2) + (tipWidth / 2) > document.body.clientWidth) {
+    const hasTopOverflow = (targetTop - targetHeight - tipHeight) < window.pageYOffset;
+    const hasBottomOverflow = (targetTop + targetHeight + tipHeight) > (document.documentElement.clientHeight + window.pageYOffset);
+    const hasRightOverflow = targetLeft + (targetWidth / 2) + (tipWidth / 2) > document.documentElement.clientWidth + window.pageXOffset;
+
+    // Horizontal position
+    if(hasRightOverflow) {
       this.tip.style.left = `${(targetLeft + targetWidth) - tipWidth}px`;
       this.tip.classList.add('tipster--arrow-right');
     }
@@ -75,9 +81,14 @@ class Tipster {
       this.tip.classList.add('tipster--arrow-left');
     }
 
-    if(this.position === 'bottom') {
+    // Vertical position
+    if(this.placement === 'bottom' && !hasBottomOverflow) {
       this.tip.style.top  = `${targetTop + targetHeight + 10}px`;
     } else {
+      if (hasTopOverflow) {
+        this.tip.style.top  = `${targetTop + targetHeight + 10}px`;
+        return;
+      }
       this.tip.classList.add('tipster--arrow-top');
       this.tip.style.top  = `${targetTop - tipHeight - 10}px`;
     }
@@ -87,16 +98,15 @@ class Tipster {
     if(this.timer) clearTimeout(this.timer);
 
     if(!this.tip) {
-      this.tip = this._create();
+      this.tip = this.create();
     } else {
       this.tip.className = 'tipster';
       this.tip.style.left = ''
-      this.tip.style.right = ''
     }
 
     this.delay = Utils.getTransitionDurationFromElement(this.tip);
     this.tip.innerHTML = this.target.getAttribute('data-tooltip');
-    this._position();
+    this.position();
 
     setTimeout(() => {
       this.tip.classList.add('is-show');

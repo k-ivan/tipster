@@ -13,7 +13,7 @@
   opacity: 0;
   transition: opacity .15s linear;
   box-sizing: border-box;
-  z-index: 3000;
+  z-index: 999;
 }
 .tipster.is-show {
   opacity: 1;

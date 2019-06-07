@@ -1,42 +1,42 @@
 {
-  "name": "tooltips",
+  "name": "@k-ivan/tipster",
   "version": "0.0.1",
-  "description": "Easy and minimalistic tips plugin",
-  "main": "dist/tooltips.js",
+  "description": "Easy and minimalistic tooltips plugin with no dependencies",
+  "main": "dist/tipster.js",
   "scripts": {
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production",
-    "start": "webpack-dev-server --inline --progress --mode development --open",
+    "build": "rollup -c",
+    "start": "rollup -c -w",
     "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/k-ivan/tooltips.git"
+    "url": "git+https://github.com/k-ivan/tipster.git"
   },
   "keywords": [
     "tooltips",
     "js tooltips",
-    "simple tooltips"
+    "tooltips plugin",
+    "simple tooltips",
+    "tipster"
   ],
   "author": "k-ivan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/k-ivan/tooltips/issues"
+    "url": "https://github.com/k-ivan/tipster/issues"
   },
-  "homepage": "https://github.com/k-ivan/tooltips#readme",
-  "dependencies": {
-    "@babel/core": "^7.4.3",
+  "homepage": "https://github.com/k-ivan/tipster#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
     "@babel/plugin-transform-object-assign": "^7.2.0",
-    "@babel/preset-env": "^7.4.3",
-    "autoprefixer": "^9.5.1",
-    "babel-loader": "^8.0.5",
-    "clean-webpack-plugin": "^2.0.1",
-    "css-loader": "^2.1.1",
+    "@babel/preset-env": "^7.4.5",
     "gh-pages": "^2.0.1",
-    "mini-css-extract-plugin": "^0.6.0",
-    "postcss-loader": "^3.0.0",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "rollup": "^1.14.3",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-browsersync": "^1.0.0",
+    "rollup-plugin-delete": "^1.0.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-terser": "^5.0.0"
   }
 }
