@@ -82,13 +82,9 @@ class Tipster {
     }
 
     // Vertical position
-    if(this.placement === 'bottom' && !hasBottomOverflow) {
+    if((this.placement === 'bottom' && !hasBottomOverflow) || hasTopOverflow) {
       this.tip.style.top  = `${targetTop + targetHeight + 10}px`;
     } else {
-      if (hasTopOverflow) {
-        this.tip.style.top  = `${targetTop + targetHeight + 10}px`;
-        return;
-      }
       this.tip.classList.add('tipster--arrow-top');
       this.tip.style.top  = `${targetTop - tipHeight - 10}px`;
     }
