@@ -9,5 +9,5 @@ Easy and minimalistic tooltips plugin with no dependencies
 <script src="tipster.js"></script>
 ```
 ```js
-  var tips = new Tipster('[data-tooltip]');
+var tips = new Tipster('[data-tooltip]');
 ```
