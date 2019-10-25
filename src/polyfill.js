@@ -1,24 +1,16 @@
+if (!Element.prototype.matches) {
+  Element.prototype.matches = Element.prototype.msMatchesSelector ||
+                              Element.prototype.webkitMatchesSelector;
+}
 
-Element.prototype.matches = Element.prototype.matches || function matches(selector) {
+if (!Element.prototype.closest) {
+  Element.prototype.closest = function(s) {
+    var el = this;
 
-  let element = this;
-  let elements = (element.document || element.ownerDocument).querySelectorAll(selector);
-  let index = 0;
-
-  while (elements[index] && elements[index] !== element) {
-    ++index;
-  }
-
-  return !!elements[index];
-};
-
-Element.prototype.closest = Element.prototype.closest || function closest(selector) {
-  let node = this;
-
-  while (node) {
-    if (node.matches(selector)) return node;
-    else node = node.parentElement;
-  }
-
-  return null;
-};
+    do {
+      if (el.matches(s)) return el;
+      el = el.parentElement || el.parentNode;
+    } while (el !== null && el.nodeType === 1);
+    return null;
+  };
+}
