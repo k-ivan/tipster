@@ -1,12 +1,13 @@
+import path from 'path';
 import babel from 'rollup-plugin-babel';
-import browsersync from 'rollup-plugin-browsersync'
+import browsersync from 'rollup-plugin-browsersync';
 import postcss from 'rollup-plugin-postcss';
 import progress from 'rollup-plugin-progress';
-import del from 'rollup-plugin-delete'
+import del from 'rollup-plugin-delete';
 import { terser } from 'rollup-plugin-terser';
-import { version, description, homepage, author, license } from './package.json'
+import { version, description, homepage, author, license } from './package.json';
 
-const OUTPUT = 'dist'
+const OUTPUT = 'dist';
 const production = !process.env.ROLLUP_WATCH;
 const sourcemap = !production ? 'inline' : false;
 
@@ -45,8 +46,8 @@ export default {
         output: { preamble: banner }
       }),
     postcss({
-      extract: `${OUTPUT}/tipster.css`,
+      extract: path.resolve(`${OUTPUT}/tipster.css`),
       minimize: false
     })
   ]
-}
+};
