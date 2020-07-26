@@ -1,6 +1,6 @@
 {
   "name": "@k-ivan/tipster",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Easy and minimalistic tooltips plugin with no dependencies",
   "main": "dist/tipster.js",
   "scripts": {

@@ -1,44 +1,50 @@
 .tipster {
   position: absolute;
   padding: .7rem 1rem;
-  max-width: 220px;
+  max-width: 320px;
   font-size: .8em;
   font-family: inherit;
   text-align: left;
   letter-spacing: 0.03rem;
   color: #fff;
   background: #2a2a2a;
-  will-change: opacity;
   border-radius: 2px;
   opacity: 0;
   transition: opacity .15s linear;
   box-sizing: border-box;
   z-index: 999;
+  pointer-events: none;
 }
 .tipster.is-show {
   opacity: 1;
-  pointer-events: none;
 }
-.tipster::after {
+.tipster__arrow {
+  position: absolute;
+  left: 0;
+  right: auto;
+  width: 14px;
+  height: 14px;
+  z-index: -1;
+}
+.tipster[data-placement="top"] .tipster__arrow {
+  bottom: 0;
+}
+.tipster[data-placement="bottom"] .tipster__arrow {
+  top: 0;
+}
+.tipster[data-placement="top"] .tipster__arrow::before {
+  bottom: -6px;
+  border-top-color: #2a2a2a;
+  border-width: 7px 7px 0;
+}
+.tipster[data-placement="bottom"] .tipster__arrow::before {
+  top: -6px;
+  border-bottom-color: #2a2a2a;
+  border-width: 0 7px 7px;
+}
+.tipster__arrow::before {
   content: '';
   position: absolute;
-  top: -10px;
-  border: 5px solid transparent;
-  border-bottom-color: #2a2a2a;
-  z-index: 1;
-}
-.tipster--arrow-top::after {
-  top: 100%;
-  border: 5px solid transparent;
-  border-top-color: #2a2a2a;
-}
-.tipster--arrow-right::after {
-  right: 10px;
-}
-.tipster--arrow-left::after {
-  left: 10px;
-}
-.tipster--arrow-center::after {
-  left: 50%;
-  margin-left: -5px;
+  left: 0;
+  border: solid transparent;
 }

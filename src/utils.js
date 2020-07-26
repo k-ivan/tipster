@@ -34,6 +34,6 @@ export default {
       left: left + window.pageXOffset,
       width: right - left,
       height: bottom - top
-    }
+    };
   }
-}
+};
