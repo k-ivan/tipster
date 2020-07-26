@@ -1,0 +1,44 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": ["error", {
+      "allow": ["warn", "error"]
+    }],
+    "indent": [
+      "error",
+      2,
+      {
+        "ignoredNodes": ["TemplateLiteral > *"],
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single",
+      { "allowTemplateLiterals": true }
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "space-infix-ops": ["error", { "int32Hint": false }],
+    "arrow-spacing": "error",
+    "no-duplicate-imports": "error",
+    "no-unneeded-ternary": "error",
+    "padded-blocks": ["error", "never"],
+    "no-empty": ["error", { "allowEmptyCatch": true }]
+  }
+}
