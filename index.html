@@ -17,7 +17,7 @@
       padding: 20px;
       margin: auto;
     }
-    .tip {
+    a.tip {
       color: blue;
       cursor: pointer;
     }
@@ -25,6 +25,18 @@
       display: inline-block;
       max-width: 100%;
       height: auto;
+    }
+    p i {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background-color: royalblue;
+      color: #fff;
+      vertical-align: middle;
+      text-align: center;
+      border-radius: 50%;
     }
   </style>
 </head>
@@ -38,9 +50,10 @@
     </p>
     <p>
       <img class="tip" data-tooltip="This is image from unsplash" src="https://picsum.photos/150" alt="">
-      <img class="tip" data-tooltip="This is second image from unsplash" src="https://picsum.photos/150" alt="">
+      <img class="tip" data-tooltip="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, mollitia obcaecati! Magnam mollitia, numquam repudiandae doloribus ea qui minima amet." src="https://picsum.photos/150" alt="">
       <img class="tip" data-tooltip="This is another image from unsplash" src="https://picsum.photos/150" alt="">
     </p>
+    <p style="text-align: right;"><i class="tip" data-tooltip="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, mollitia obcaecati! Magnam mollitia, numquam repudiandae doloribus ea qui minima amet.">i</i></p>
   </div>
   <!-- for ie 9 -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.2.20171210/classList.min.js"></script> -->
